@@ -9,6 +9,18 @@ struct gaussian_parameters
 	double sigma;
 };
 
+struct gaussian_parameters g_p_init(double x, double y)
+/* initialise the gaussian parameters 
+*/
+{
+
+	struct gaussian_parameters v;
+	v.mu = x;
+	v.sigma = y;
+	return v;
+}
+
+
 double gaussian(double x, struct gaussian_parameters params)
 {
 	params.mu = 0;
@@ -60,10 +72,9 @@ int main (void)
 	scanf("%lf", &N);
 	a = -1;
 	b = 1;
-	struct gaussian_parameters v;
-	v.mu = 0;
-	v.sigma = 1;
-	left_riemann_sum(N, a, b, v, gaussian);
-	right_riemann_sum(N, a, b, v, gaussian);
+	struct gaussian_parameters normaldistribution;
+	normaldistribution = g_p_init(0,1); 
+	left_riemann_sum(N, a, b, normaldistribution, gaussian);
+	right_riemann_sum(N, a, b, normaldistribution, gaussian);
 	return 0;
 }
