@@ -98,9 +98,9 @@ int main (void)
 
 	InitialData A;
 	InitialData* pA;
-	A = initialdata_init(N,a,b);
+	//A = initialdata_init(N,a,b);
 	pA = &A;
-	
+	*pA = initialdata_init(N,a,b);
 	Gaussian norm;
 	Gaussian * pnorm;
 	norm = g_p_init(mu,sigma); 
