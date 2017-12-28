@@ -21,10 +21,10 @@ Gaussian g_p_init(double x, double y)
 */
 {
 
-	Gaussian v;
-	v.mu = x;
-	v.sigma = y;
-	return v;
+	Gaussian z;
+	z.mu = x;
+	z.sigma = y;
+	return z;
 }
 
 InitialData initialdata_init(double a, double b, double c)
@@ -97,12 +97,16 @@ int main (void)
 		scanf("%lf", &sigma);
 
 	InitialData A;
+	InitialData* pA;
 	A = initialdata_init(N,a,b);
+	pA = &A;
 	
 	Gaussian norm;
+	Gaussian * pnorm;
 	norm = g_p_init(mu,sigma); 
+	pnorm = &norm;
 	
-	left_riemann_sum(A, norm, gaussian);
-	right_riemann_sum(A, norm, gaussian);
+	left_riemann_sum(*pA, *pnorm, gaussian);
+	right_riemann_sum(*pA, *pnorm, gaussian);
 	return 0;
 }
