@@ -3,59 +3,72 @@
 #include <stdio.h>
 #include <string.h>
 
-struct gaussian_parameters
+typedef struct gaussian_parameters
 {
 	double mu;
 	double sigma;
-};
+}Gaussian;
 
-struct gaussian_parameters g_p_init(double x, double y)
+typedef struct bounds_stepsize
+{
+	double N;
+	double initial;
+	double final;
+}InitialData;
+
+Gaussian g_p_init(double x, double y)
 /* initialise the gaussian parameters 
 */
 {
 
-	struct gaussian_parameters v;
+	Gaussian v;
 	v.mu = x;
 	v.sigma = y;
 	return v;
 }
 
-
-double gaussian(double x, struct gaussian_parameters params)
+InitialData initialdata_init(double a, double b, double c)
 {
-	params.mu = 0;
-	params.sigma = 1;
+	InitialData x;
+	x.N = a;
+	x.initial = b;
+	x.final = c;
+	return x;
+}
+
+double gaussian(double x, Gaussian params)
+{
 	return (1/(sqrt(2*M_PI)*params.sigma))*
 	exp(-pow(x-params.mu, 2)/(2*pow(params.sigma, 2)));
 }
 
 //left Riemann sum
-double left_riemann_sum(double N, double initial, double final, struct gaussian_parameters params,
-double(*func)(double, struct gaussian_parameters)) 
+double left_riemann_sum(InitialData A, Gaussian params,
+double(*func)(double, Gaussian)) 
 /*initial instead of init, cuz __init__ is SPECIAL, at least somewhere else :)
 */
 {
 	double left_sum = 0;
-	for(double i = 1; i <= N; i++)
+	for(double i = 1; i <= A.N; i++)
 	{
-		left_sum += ((initial+(i*(final-initial))/N) - /*upper bound*/
-		(initial + (((i-1)*(final-initial))/N))) * /*lower bound*/
-		(*func)((initial + (((i-1)*(final-initial))/N)), params);
+		left_sum += ((A.initial+(i*(A.final-A.initial))/A.N) - /*upper bound*/
+		(A.initial + (((i-1)*(A.final-A.initial))/A.N))) * /*lower bound*/
+		(*func)((A.initial + (((i-1)*(A.final-A.initial))/A.N)), params);
 	}
 	printf("left riemann sum = %lf\n", left_sum);
 }
 
 
 //right Rieman sum
-double right_riemann_sum(double N, double initial, double final, struct gaussian_parameters params,
-double(*func)(double, struct gaussian_parameters))
+double right_riemann_sum(InitialData A, Gaussian params,
+double(*func)(double, Gaussian)) 
 {
 	double right_sum = 0;
-	for(double i = 1; i <= N; i++)
+	for(double i = 1; i <= A.N; i++)
 	{
-		right_sum += ((initial+(i*(final-initial))/N) - /*upper bound*/
-		(initial + (((i-1)*(final-initial))/N))) * /*lower bound*/
-		(*func)(((initial+(i*(final-initial))/N)), params);
+		right_sum += ((A.initial+(i*(A.final-A.initial))/A.N) - /*upper bound*/
+		(A.initial + (((i-1)*(A.final-A.initial))/A.N))) * /*lower bound*/
+		(*func)(((A.initial+(i*(A.final-A.initial))/A.N)), params);
 	}
 	printf("right riemann sum = %lf\n", right_sum);
 }
@@ -67,14 +80,29 @@ double(*func)(double, struct gaussian_parameters))
 
 int main (void)
 {
-	double N,a,b;
+	double N,a,b,mu,sigma;
 	printf("Enter stepsize: ");
 	scanf("%lf", &N);
-	a = -1;
-	b = 1;
-	struct gaussian_parameters normaldistribution;
-	normaldistribution = g_p_init(0,1); 
-	left_riemann_sum(N, a, b, normaldistribution, gaussian);
-	right_riemann_sum(N, a, b, normaldistribution, gaussian);
+
+	printf("\nEnter lower bound: ");
+		scanf("%lf", &a);
+		
+	printf("\nEnter upper bound: ");
+		scanf("%lf", &b);
+		
+	printf("\nEnter mu: ");
+		scanf("%lf", &mu);
+
+	printf("\nEnter sigma: ");
+		scanf("%lf", &sigma);
+
+	InitialData A;
+	A = initialdata_init(N,a,b);
+	
+	Gaussian norm;
+	norm = g_p_init(mu,sigma); 
+	
+	left_riemann_sum(A, norm, gaussian);
+	right_riemann_sum(A, norm, gaussian);
 	return 0;
 }
