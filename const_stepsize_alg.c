@@ -20,7 +20,6 @@ Gaussian g_p_init(double x, double y)
 /* initialise the gaussian parameters 
 */
 {
-
 	Gaussian z;
 	z.mu = x;
 	z.sigma = y;
@@ -98,13 +97,14 @@ int main (void)
 
 	InitialData A;
 	InitialData* pA;
-	//A = initialdata_init(N,a,b);
 	pA = &A;
 	*pA = initialdata_init(N,a,b);
+	
 	Gaussian norm;
 	Gaussian * pnorm;
-	norm = g_p_init(mu,sigma); 
 	pnorm = &norm;
+	*pnorm = g_p_init(mu,sigma); 
+
 	
 	left_riemann_sum(*pA, *pnorm, gaussian);
 	right_riemann_sum(*pA, *pnorm, gaussian);
