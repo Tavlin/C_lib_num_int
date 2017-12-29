@@ -2,38 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
-typedef struct gaussian_parameters
-{
-	double mu;
-	double sigma;
-}Gaussian;
-
-typedef struct bounds_stepsize
-{
-	double N;
-	double initial;
-	double final;
-}InitialData;
-
-Gaussian g_p_init(double x, double y)
-/* initialise the gaussian parameters 
-*/
-{
-	Gaussian z;
-	z.mu = x;
-	z.sigma = y;
-	return z;
-}
-
-InitialData initialdata_init(double a, double b, double c)
-{
-	InitialData x;
-	x.N = a;
-	x.initial = b;
-	x.final = c;
-	return x;
-}
+#include"initial_data.h"
 
 double gaussian(double x, Gaussian params)
 {
@@ -54,7 +23,7 @@ double(*func)(double, Gaussian))
 		(A.initial + (((i-1)*(A.final-A.initial))/A.N))) * /*lower bound*/
 		(*func)((A.initial + (((i-1)*(A.final-A.initial))/A.N)), params);
 	}
-	printf("left riemann sum = %lf\n", left_sum);
+	printf("left riemann sum = %+6.10lf\n", left_sum);
 }
 
 
@@ -69,7 +38,7 @@ double(*func)(double, Gaussian))
 		(A.initial + (((i-1)*(A.final-A.initial))/A.N))) * /*lower bound*/
 		(*func)(((A.initial+(i*(A.final-A.initial))/A.N)), params);
 	}
-	printf("right riemann sum = %lf\n", right_sum);
+	printf("right riemann sum = %+6.10lf\n", right_sum);
 }
 
 
