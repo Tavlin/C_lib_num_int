@@ -2,15 +2,16 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "initial_data.h"
+//#include "initial_data.h"
 #include "integrals.h"
 
+/*
 double gaussian(double x, Gaussian params)
 {
 	return (1/(sqrt(2*M_PI)*params.sigma))*
 	exp(-pow(x-params.mu, 2)/(2*pow(params.sigma, 2)));
 }
-
+*/
 
 int main (void)
 {
@@ -43,5 +44,7 @@ int main (void)
 	
 	left_riemann_sum(*pA, *pnorm, gaussian);
 	right_riemann_sum(*pA, *pnorm, gaussian);
+	trapezodial_integral(*pA, *pnorm, gaussian);
+	
 	return 0;
 }
