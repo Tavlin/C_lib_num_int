@@ -10,10 +10,10 @@ double(*func)(double, FunctionParams))
 //initial instead of init, cuz __init__ is SPECIAL, at least somewhere else :)
 
 {
+	// start value for the sum
 	double left_sum = 0;
 	
-	double stepsize;
-	stepsize = (A.final_val-A.initial)/A.N;
+	double stepsize = (A.final_val-A.initial)/A.N; 
 	
 	for(double i = 1; i <= A.N; i++)
 	{
@@ -30,8 +30,7 @@ double(*func)(double, FunctionParams))
 {
 	double right_sum = 0;
 	
-	double stepsize;
-	stepsize = (A.final_val-A.initial)/A.N;
+	double stepsize = (A.final_val-A.initial)/A.N;
 	
 	for(double i = 1; i <= A.N; i++)
 	{
@@ -45,18 +44,19 @@ double(*func)(double, FunctionParams))
 double trapezodial_integral(InitialData A, FunctionParams params,
 double(*func)(double, FunctionParams))
 {
+	// upper function value with pointy pointer
 	double right_step = 0;
 	double * pright_step;
 	pright_step = &right_step;
 	
+	// lower function value with pointy pointer
 	double left_step = 0;
 	double * pleft_step;
 	pleft_step = &left_step;
 	
 	double integral_val = 0;
-	double stepsize;
-	stepsize = (A.final_val-A.initial)/A.N;
-	*pleft_step = (*func)((A.initial), params);
+	
+	double stepsize = (A.final_val-A.initial)/A.N;
 	
 	*pleft_step = (*func)((A.initial), params);
 	
@@ -76,17 +76,21 @@ double(*func)(double, FunctionParams))
 double simpson_integral(InitialData A, FunctionParams params,
 double(*func)(double, FunctionParams))
 {
+	// upper function value with pointy pointer
 	double right_step = 0;
 	double * pright_step;
 	pright_step = &right_step;
 	
+	// lower function value with pointy pointer
 	double left_step = 0;
 	double * pleft_step;
 	pleft_step = &left_step;
 	
 	double integral_val = 0;
-	double stepsize;
-	stepsize = (A.final_val-A.initial)/A.N;
+	
+	double stepsize = (A.final_val-A.initial)/A.N;
+	
+	// initial lower function value
 	*pleft_step = (*func)((A.initial), params);
 	
 	for(double i = 1; i <= A.N; i++)
@@ -100,7 +104,6 @@ double(*func)(double, FunctionParams))
 		
 		(*pleft_step) = (*pright_step);
 		
-		//printf("\ndumme summe = %6.10lf\n", h);
 	}
 	printf("simpson integral = %+6.10lf\n\n", integral_val);
 }
