@@ -1,4 +1,4 @@
-struct gaussian_parameters
+struct function_parameters
 {
 	double mu;
 	double sigma;
@@ -8,21 +8,23 @@ struct bounds_stepsize
 {
 	double N;
 	double initial;
-	double final;
+	double final_val;
 };
 
 
 // structure for gaussian parameters
-typedef struct gaussian_parameters Gaussian;
+typedef struct function_parameters FunctionParams;
 
 //structure for the integral-bounds and the stepsize
 typedef struct bounds_stepsize InitialData;
 
 
 //declaration
-Gaussian g_p_init(double x, double y);
+FunctionParams g_p_init(double x, double y);
 
 //declaration
 InitialData initialdata_init(double a, double b, double c);
 
-double gaussian(double x, Gaussian params);
+double gaussian(double x, FunctionParams params);
+
+double strange_cos(double x, FunctionParams params);
