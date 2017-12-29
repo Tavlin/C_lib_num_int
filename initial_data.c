@@ -1,20 +1,5 @@
 #include"initial_data.h"
 
-/*
-typedef struct gaussian_parameters
-{
-	double mu;
-	double sigma;
-}Gaussian;
-
-typedef struct bounds_stepsize
-{
-	double N;
-	double initial;
-	double final;
-}InitialData;
-
-*/
 Gaussian g_p_init(double x, double y)
 /* initialise the gaussian parameters 
 */
