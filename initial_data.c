@@ -1,4 +1,4 @@
-#include"initial_data.h"
+#include "initial_data.h"
 
 Gaussian g_p_init(double x, double y)
 /* initialise the gaussian parameters 
