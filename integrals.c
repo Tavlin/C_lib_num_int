@@ -4,9 +4,14 @@
 #include <string.h>
 #include "integrals.h"
 
+//planed:
+//changing all given parameters to pointers. Gonna happen... someday... I guess
+
+
+
 //left Riemann sum
 double left_riemann_sum(InitialData A, FunctionParams params,
-double(*func)(double, FunctionParams))
+double(*func)(double, FunctionParams), double eps)
 //initial instead of init, cuz __init__ is SPECIAL, at least somewhere else :)
 
 {
@@ -26,7 +31,7 @@ double(*func)(double, FunctionParams))
 
 //right Rieman sum
 double right_riemann_sum(InitialData A, FunctionParams params,
-double(*func)(double, FunctionParams))
+double(*func)(double, FunctionParams), double eps)
 {
 	double right_sum = 0;
 	
@@ -42,7 +47,7 @@ double(*func)(double, FunctionParams))
 
 //Trapezodial Rule
 double trapezodial_integral(InitialData A, FunctionParams params,
-double(*func)(double, FunctionParams))
+double(*func)(double, FunctionParams), double eps)
 {
 	// upper function value with pointy pointer
 	double right_step = 0;
@@ -74,7 +79,7 @@ double(*func)(double, FunctionParams))
 
 //Simpson's Rule
 double simpson_integral(InitialData A, FunctionParams params,
-double(*func)(double, FunctionParams))
+double(*func)(double, FunctionParams), double eps)
 {
 	// upper function value with pointy pointer
 	double right_step = 0;
@@ -106,5 +111,66 @@ double(*func)(double, FunctionParams))
 		
 	}
 	printf("simpson integral = %+6.10lf\n\n", integral_val);
+}
+
+
+//Trapezodial Rule semi adaptive stepsize
+double trapezodial_integral_sas(InitialData A, FunctionParams params,
+double(*func)(double, FunctionParams), double eps)
+{
+	// reset # steps to 1
+	A.N = 1.0;
+	
+	double integral_val = 0;
+	double* p_integral_val = &integral_val;
+	
+	double previous_int_val = 0;
+	double* p_previous_int_val = &previous_int_val;
+	
+	double stepsize = A.N;
+	double h = (A.final_val - A.initial);
+	
+	// initial int value N = 1
+	(*p_previous_int_val) = (h/2.0) *
+	((*func)(A.initial,params) + (*func)(A.final_val,params));
+
+	// initial int value N = 2
+	(*p_integral_val) = (*p_previous_int_val)/2.0 + 
+	(	h/2.0) * 
+	((*func)((A.final_val + A.initial)/2.0, params));
+	
+	
+	while(fabs((*p_previous_int_val)-(*p_integral_val)) > eps)
+	{
+		
+		A.N *= 2.0;
+		stepsize = 1.0/A.N;
+	
+		// 2*stepsize so the calculation is only done once per stepsize
+		// otherwise it would need to calc every for iteration
+		double tt_stepsize = 2.0*stepsize;
+	
+		// new maximum value for the new midpoints:
+		double max_val_midpoints = (A.N-1.0)/A.N;
+	
+		(*p_previous_int_val) = (*p_integral_val);
+	
+		double new_int_val = 0;
+		double* p_new_int_val = &new_int_val;
+	
+		for(double j = stepsize; j <= max_val_midpoints; j += tt_stepsize)
+		{
+			(*p_new_int_val) += h*stepsize * 
+			(*func)((j*(A.initial+A.final_val)), params);
+			
+		}
+	
+		(*p_integral_val) = (*p_new_int_val) + (*p_integral_val)/2.0;
+
+	}
+	printf("Trapezodial Rule with semi adaptive stepsize = %+6.10lf\n",
+	integral_val);
+	printf("Number of steps = %.0lf\n\n", A.N);
+	
 }
 

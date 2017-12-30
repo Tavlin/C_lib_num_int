@@ -32,15 +32,19 @@ int main (void)
 	pnorm = &norm;
 	*pnorm = g_p_init(mu,sigma); 
 
-	left_riemann_sum(*pA, *pnorm, gaussian);
-	right_riemann_sum(*pA, *pnorm, gaussian);
-	trapezodial_integral(*pA, *pnorm, gaussian);
-	simpson_integral(*pA, *pnorm, gaussian);
 	
-	left_riemann_sum(*pA, *pnorm, strange_cos);
-	right_riemann_sum(*pA, *pnorm, strange_cos);
-	trapezodial_integral(*pA, *pnorm, strange_cos);
-	simpson_integral(*pA, *pnorm, strange_cos);
+	left_riemann_sum(*pA, *pnorm, gaussian, 0);
+	right_riemann_sum(*pA, *pnorm, gaussian, 0);
+	trapezodial_integral(*pA, *pnorm, gaussian, 0);
+	simpson_integral(*pA, *pnorm, gaussian, 0);
+	
+	left_riemann_sum(*pA, *pnorm, strange_cos, 0);
+	right_riemann_sum(*pA, *pnorm, strange_cos, 0);
+	trapezodial_integral(*pA, *pnorm, strange_cos, 0);
+	simpson_integral(*pA, *pnorm, strange_cos, 0);
+	
+	trapezodial_integral_sas(*pA, *pnorm, gaussian, 0.0000001);
+	trapezodial_integral_sas(*pA, *pnorm, strange_cos, 0.0000001);
 	
 	return 0;
 }
