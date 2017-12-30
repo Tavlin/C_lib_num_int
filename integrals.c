@@ -130,6 +130,9 @@ double(*func)(double, FunctionParams), double eps)
 	double stepsize = A.N;
 	double h = (A.final_val - A.initial);
 	
+	double new_int_val = 0;
+	double* p_new_int_val = &new_int_val;
+	
 	// initial int value N = 1
 	(*p_previous_int_val) = (h/2.0) *
 	((*func)(A.initial,params) + (*func)(A.final_val,params));
@@ -147,7 +150,7 @@ double(*func)(double, FunctionParams), double eps)
 		stepsize = 1.0/A.N;
 	
 		// 2*stepsize so the calculation is only done once per stepsize
-		// otherwise it would need to calc every for iteration
+		// otherwise it would need to calc for every for iteration
 		double tt_stepsize = 2.0*stepsize;
 	
 		// new maximum value for the new midpoints:
@@ -155,8 +158,7 @@ double(*func)(double, FunctionParams), double eps)
 	
 		(*p_previous_int_val) = (*p_integral_val);
 	
-		double new_int_val = 0;
-		double* p_new_int_val = &new_int_val;
+		*p_new_int_val = 0;
 	
 		for(double j = stepsize; j <= max_val_midpoints; j += tt_stepsize)
 		{
