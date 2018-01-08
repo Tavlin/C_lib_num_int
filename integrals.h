@@ -1,7 +1,10 @@
 #include "initial_data_and_functions.h"
 
-// xorSwap algorithm
+// Swap algorithm
 void xorSwap (double x, double y);
+
+// function trafo for open boundary
+//double func_trafo(double(*func)(double x, FunctionParams));
 
 // left Riemann sum
 double left_riemann_sum(InitialData A, FunctionParams params,
@@ -26,4 +29,8 @@ double(*func)(double, FunctionParams), double eps);
 
 // semi adaptive midpoint rule
 double midpoint_int(InitialData A, FunctionParams params,
+double(*func)(double, FunctionParams), double eps);
+
+// semi adaptive midpoint rule with [a,inf)
+double midpoint_int_to_inf(InitialData A, FunctionParams params,
 double(*func)(double, FunctionParams), double eps);

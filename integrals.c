@@ -6,8 +6,9 @@
 
 //planed:
 //changing all given parameters to pointers. Gonna happen... someday... I guess
+// printf function to give it a better look and fix some double posting
 
-// https://en.wikipedia.org/wiki/XOR_swap_algorithm
+// if lower boundary > upper boundary
 void swap (double x, double y)
 {
 	if (x != y)
@@ -20,15 +21,26 @@ void swap (double x, double y)
 }
 
 
+// function trafo for open boundary
+/*
+double * (double,  FunctionParams)func_trafo(double(*func)(double, FunctionParams))
+{	
+	double x;
+	FunctionParams params;
+	return 1/pow(x,2) * (*func)(1/x, params);
+}*/
+
 //left Riemann sum
 double left_riemann_sum(InitialData A, FunctionParams params,
 double(*func)(double, FunctionParams), double eps)
 //initial instead of init, cuz __init__ is SPECIAL, at least somewhere else :)
 
 {
+	int swaped;
 	// checks that initial value is allways smaller then final value 
 	if(A.final_val < A.initial)
-	{
+	{	
+		swaped = 1;
 		swap(A.final_val, A.initial);
 	}
 	
@@ -42,7 +54,16 @@ double(*func)(double, FunctionParams), double eps)
 		left_sum += stepsize *
 		(*func)((A.initial + (((i-1)*(A.final_val-A.initial))/A.N)), params);
 	}
-	printf("left riemann sum = %+6.10lf\n", left_sum);
+	
+	if(swaped ==1)
+	{
+		printf("left riemann sum = %+6.10lf\n", -left_sum);
+	}
+	
+	else
+	{
+		printf("left riemann sum = %+6.10lf\n", left_sum);
+	}
 }
 
 
@@ -51,9 +72,11 @@ double right_riemann_sum(InitialData A, FunctionParams params,
 double(*func)(double, FunctionParams), double eps)
 {
 
+	int swaped;
 	// checks that initial value is allways smaller then final value 
 	if(A.final_val < A.initial)
-	{
+	{	
+		swaped = 1;
 		swap(A.final_val, A.initial);
 	}
 	
@@ -66,7 +89,16 @@ double(*func)(double, FunctionParams), double eps)
 		right_sum += stepsize *
 		(*func)(((A.initial+(i*(A.final_val-A.initial))/A.N)), params);
 	}
-	printf("right riemann sum = %+6.10lf\n", right_sum);
+	
+	if(swaped ==1)
+	{
+		printf("right riemann sum = %+6.10lf\n", -right_sum);
+	}
+	
+	else
+	{
+		printf("right riemann sum = %+6.10lf\n", right_sum);
+	}
 }
 
 //Trapezodial Rule
@@ -74,9 +106,11 @@ double trapezodial_integral(InitialData A, FunctionParams params,
 double(*func)(double, FunctionParams), double eps)
 {
 
+	int swaped;
 	// checks that initial value is allways smaller then final value 
 	if(A.final_val < A.initial)
 	{
+		swaped = 1;
 		swap(A.final_val, A.initial);
 	}
 	
@@ -105,7 +139,16 @@ double(*func)(double, FunctionParams), double eps)
 		
 		(*pleft_step) = (*pright_step);
 	}
-	printf("trapezodial integral = %+6.10lf\n", integral_val);
+	
+	if(swaped ==1)
+	{
+		printf("trapezodial integral = %+6.10lf\n", -integral_val);
+	}
+	
+	else
+	{
+		printf("trapezodial integral = %+6.10lf\n", integral_val);
+	}
 }
 
 //Simpson's Rule
@@ -113,9 +156,11 @@ double simpson_integral(InitialData A, FunctionParams params,
 double(*func)(double, FunctionParams), double eps)
 {
 
+	int swaped;
 	// checks that initial value is allways smaller then final value 
 	if(A.final_val < A.initial)
 	{
+		swaped = 1;
 		swap(A.final_val, A.initial);
 	}
 	
@@ -148,7 +193,17 @@ double(*func)(double, FunctionParams), double eps)
 		(*pleft_step) = (*pright_step);
 		
 	}
-	printf("simpson integral = %+6.10lf\n\n", integral_val);
+	
+	if(swaped ==1)
+	{
+		printf("simpson integral = %+6.10lf\n", -integral_val);
+	}
+	
+	else
+	{
+		printf("simpson integral = %+6.10lf\n", integral_val);
+	}
+
 }
 
 
@@ -156,10 +211,11 @@ double(*func)(double, FunctionParams), double eps)
 double trapezodial_integral_sas(InitialData A, FunctionParams params,
 double(*func)(double, FunctionParams), double eps)
 {
-
+	int swaped;
 	// checks that initial value is allways smaller then final value 
 	if(A.final_val < A.initial)
 	{
+		swaped = 1;
 		swap(A.final_val, A.initial);
 	}
 	
@@ -219,8 +275,19 @@ double(*func)(double, FunctionParams), double eps)
 		(*p_integral_val) = (*p_new_int_val) + (*p_integral_val)/2.0;
 
 	}
-	printf("Trapezodial Rule with semi adaptive stepsize = %+6.10lf\n",
-	integral_val);
+	
+	if(swaped ==1)
+	{
+		printf("Trapezodial Rule with semi adaptive stepsize = %+6.10lf\n",
+		-integral_val);
+	}
+	
+	else
+	{
+		printf("Trapezodial Rule with semi adaptive stepsize = %+6.10lf\n",
+		integral_val);
+	}
+	
 	printf("Number of steps used in last calculation = %.0lf\n\n", A.N);
 	
 }
@@ -230,10 +297,11 @@ double(*func)(double, FunctionParams), double eps)
 double midpoint_int(InitialData A, FunctionParams params,
 double(*func)(double, FunctionParams), double eps)
 {
-
+	int swaped;
 	// checks that initial value is allways smaller then final value 
 	if(A.final_val < A.initial)
 	{
+		swaped = 1;
 		swap(A.final_val, A.initial);
 	}
 	
@@ -265,11 +333,6 @@ double(*func)(double, FunctionParams), double eps)
 	(*p_integral_val) = (*p_previous_int_val)/3.0 + h * 
 	(((*func)(midpoint - h, params)) + ((*func)(midpoint + h, params)));
 	
-	//printf("f(-h) = %+6.10lf\n", (*func)(midpoint - h, params));
-	//printf("f(+h) = %+6.10lf\n", (*func)(midpoint + h, params));
-	//printf("Integral for N = 1 is %+6.10lf\n", (*p_previous_int_val));
-	//printf("Integral for N = 3 is %+6.10lf\n", (*p_integral_val));
-	
 	while(fabs((*p_previous_int_val)-(*p_integral_val)) > eps)
 	{
 		
@@ -295,14 +358,108 @@ double(*func)(double, FunctionParams), double eps)
 		(*p_integral_val) = (*p_new_int_val) + (*p_integral_val)/3.0;
 
 	}
-	printf("Midpoint Rule with semi adaptive stepsize = %+6.10lf\n",
-	integral_val);
+	
+	if(swaped ==1)
+	{
+		printf("Midpoint Rule with semi adaptive stepsize = %+6.10lf\n",
+		-integral_val);
+	}
+	
+	else
+	{
+		printf("Midpoint Rule with semi adaptive stepsize = %+6.10lf\n",
+		integral_val);
+	}
+
 	printf("Number of steps used in last calculation = %.0lf\n\n", A.N);
 	
 	
 }
 
+// semi adaptive midpoint rule with [a,inf)
+double midpoint_int_to_inf(InitialData  A, FunctionParams params,
+double(*func)(double, FunctionParams), double eps)
+{
+	
+	// check if lower bound is < 0, so split is needed in [a,0.25] nad [0.25,inf)
+	// 0.25 so the calculation for both integrals does not take too long/too many
+	// steps
+	if(A.initial < 0)
+	{
+		double x;
+		A.final_val = 0.25;
+		midpoint_int(A, params,(*func), eps);
+		A.initial = 0;	
+	}
+	A.initial = 0;
+	A.final_val = 4;
+	
+	// reset # steps to 1
+	A.N = 1.0;
+	
+	double integral_val = 0;
+	double* p_integral_val = &integral_val;
+	
+	double previous_int_val = 0;
+	double* p_previous_int_val = &previous_int_val;
+	
+	double stepsize = 1.0/A.N;
+	double h = (A.final_val - A.initial);
+	
+	double midpoint = (A.final_val + A.initial)/2.0;
+	
+	double new_int_val = 0;
+	double* p_new_int_val = &new_int_val;
+	
+	// initial int value N = 1
+	(*p_previous_int_val) = h/pow(midpoint,2) * (*func)(1.0/midpoint, params);
+	
+	printf("For N = 1 Integral = %+6.10lf\n", (*p_previous_int_val));
+	
+	// so that N is up to date with N = 3 BEFORE entering the while loop!
+	A.N *= 3.0;
+	h /= 3.0;
+	
+	// initial int value N = 3
+	(*p_integral_val) = (*p_previous_int_val)/3.0 +  h/pow(midpoint-h,2)*
+	((*func)(midpoint - h, params)) + h/pow(midpoint+h,2) *
+	((*func)(midpoint + h, params));
+	
+	while(fabs((*p_previous_int_val)-(*p_integral_val)) > eps)
+	{
+		
+		A.N *= 3.0;
+		h /= 3.0;
+	
+		(*p_previous_int_val) = (*p_integral_val);
+	
+		*p_new_int_val = 0;
+	
+		for(double j = -((A.N/2.0) - 0.5); j <= ((A.N/2.0) - 0.5); j += 3)
+		{
+			(*p_new_int_val) += h/pow((midpoint + (j*h)),2) * 
+			(*func)(1/(midpoint + (j*h)), params);
+			
+		}
+	
+		for(double i = (-((A.N/2.0) - 0.5)) + 2; i <= ((A.N/2.0) - 0.5); i += 3)
+		{
+			(*p_new_int_val) += h/pow((midpoint + (i*h)),2) * 
+			(*func)(1/(midpoint + (i*h)), params);
+			
+		}
+	
+		(*p_integral_val) = (*p_new_int_val) + (*p_integral_val)/3.0;
 
+	}
+	
+	printf("Midpoint Rule with semi adaptive stepsize = %+6.10lf\n",
+	integral_val);
+
+	printf("Number of steps used in last calculation = %.0lf\n\n", A.N);
+	
+	
+}
 
 
 
