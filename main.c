@@ -39,23 +39,42 @@ int main (void)
 		pnorm = &norm;
 		*pnorm = g_p_init(mu,sigma); 
 
-		/*
-		left_riemann_sum(*pA, *pnorm, gaussian, 0);
-		right_riemann_sum(*pA, *pnorm, gaussian, 0);
-		trapezodial_integral(*pA, *pnorm, gaussian, 0);
-		simpson_integral(*pA, *pnorm, gaussian, 0);
+		
+		printer("Gaussian", "Left Riemann-Sum",
+		left_riemann_sum(*pA, *pnorm, gaussian, 0));
+		
+		printer("Gaussian", "Right Riemann-Sum",
+		right_riemann_sum(*pA, *pnorm, gaussian, 0));
+		
+		printer("Gaussian", "Trapezodial Integral",
+		trapezodial_integral(*pA, *pnorm, gaussian, 0));
+
+		printer("Gaussian", "Simpson Integral",
+		simpson_integral(*pA, *pnorm, gaussian, 0));
+		
+		printer("x*cos²(2*pi*x²)", "Left Riemann-Sum",
+		left_riemann_sum(*pA, *pnorm, strange_cos, 0));
+		
+		printer("x*cos²(2*pi*x²)", "Right Riemann-Sum",
+		right_riemann_sum(*pA, *pnorm, strange_cos, 0));
+		
+		printer("x*cos²(2*pi*x²)", "Trapezodial Integral",
+		trapezodial_integral(*pA, *pnorm, strange_cos, 0));
+
+		printer("x*cos²(2*pi*x²)", "Simpson Integral",
+		simpson_integral(*pA, *pnorm, strange_cos, 0));
+
+		printer("Gaussian", "semiadatipve Trapezodial Integral",
+		trapezodial_integral_sas(*pA, *pnorm, gaussian, 0.0000001));
+		
+		printer("x*cos²(2*pi*x²)", "semiadatipve Trapezodial Integral",
+		trapezodial_integral_sas(*pA, *pnorm, strange_cos, 0.0000001));
 	
-		left_riemann_sum(*pA, *pnorm, strange_cos, 0);
-		right_riemann_sum(*pA, *pnorm, strange_cos, 0);
-		trapezodial_integral(*pA, *pnorm, strange_cos, 0);
-		simpson_integral(*pA, *pnorm, strange_cos, 0);
-	
-		trapezodial_integral_sas(*pA, *pnorm, gaussian, 0.0000001);
-		trapezodial_integral_sas(*pA, *pnorm, strange_cos, 0.0000001);
-		midpoint_int(*pA, *pnorm, gaussian, 0.00000001);
-		*/
-		//printer("strange cosinus", "Midpointrule with open boundary to infinite", 
-		//midpoint_int_to_inf(*pA, *pnorm, strange_cos, 0.00001));
+		printer("Gaussian", "semiadatipve Trapezodial Integral",
+		midpoint_int(*pA, *pnorm, gaussian, 0.0000001));
+		
+		printer("x*cos²(2*pi*x²)", "semiadatipve Trapezodial Integral",
+		midpoint_int(*pA, *pnorm, strange_cos, 0.0000001));
 		
 		printer("exp^(-x²)", "Midpointrule with open boundary to infinite", 
 		midpoint_int_to_inf(*pA, *pnorm, exp_minus_x_sq, 0.00001));
@@ -87,8 +106,6 @@ int main (void)
 		pnorm = &norm;
 		*pnorm = g_p_init(mu,sigma);
 		
-		//printer("strange cosinus", "Midpointrule with open boundary to infinite", 
-		//midpoint_int_to_inf(*pA, *pnorm, strange_cos, 0.00000001));
 		
 		printer("exp^(-x²)", "Midpointrule with open boundary to infinite", 
 		midpoint_int_to_inf(*pA, *pnorm, exp_minus_x_sq, 0.00001));

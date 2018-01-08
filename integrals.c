@@ -24,7 +24,7 @@ void swap (double x, double y)
 void printer(const char * func_name, const char * integral_name,
 double integral_val)
 {
-	printf("*************************************************************\n");
+	printf("\n*************************************************************\n");
 	printf("Integraltype:\t%s\nFunction:\t%s\nIntegralvalue = %+6.10lf\n",
 	integral_name, func_name, integral_val);
 	printf("*************************************************************\n");
