@@ -30,3 +30,13 @@ double strange_cos(double x, FunctionParams params)
 {
 	return(x*pow(cos(2*M_PI*pow(x,2)),2));
 }
+
+double exp_minus_x_sq(double x, FunctionParams params)
+{
+	return (exp(-pow(x,2)));
+}
+
+double rev_sqrt(double x, FunctionParams params)
+{
+	return (1/sqrt(x));
+}

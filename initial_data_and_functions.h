@@ -24,9 +24,16 @@ typedef struct bounds_stepsize InitialData;
 // declaration
 FunctionParams g_p_init(double x, double y);
 
-//d eclaration
+// declaration
 InitialData initialdata_init(double a, double b, double c);
+
+
+//Function declerations:
 
 double gaussian(double x, FunctionParams params);
 
 double strange_cos(double x, FunctionParams params);
+
+double exp_minus_x_sq(double x, FunctionParams params);
+
+double rev_sqrt(double x, FunctionParams params);

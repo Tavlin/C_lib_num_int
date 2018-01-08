@@ -4,6 +4,7 @@
 #include <string.h>
 #include "integrals.h"
 
+
 int main (void)
 {
 	int check;
@@ -38,7 +39,7 @@ int main (void)
 		pnorm = &norm;
 		*pnorm = g_p_init(mu,sigma); 
 
-	
+		/*
 		left_riemann_sum(*pA, *pnorm, gaussian, 0);
 		right_riemann_sum(*pA, *pnorm, gaussian, 0);
 		trapezodial_integral(*pA, *pnorm, gaussian, 0);
@@ -52,7 +53,12 @@ int main (void)
 		trapezodial_integral_sas(*pA, *pnorm, gaussian, 0.0000001);
 		trapezodial_integral_sas(*pA, *pnorm, strange_cos, 0.0000001);
 		midpoint_int(*pA, *pnorm, gaussian, 0.00000001);
-		midpoint_int(*pA, *pnorm, strange_cos, 0.0000001);
+		*/
+		//printer("strange cosinus", "Midpointrule with open boundary to infinite", 
+		//midpoint_int_to_inf(*pA, *pnorm, strange_cos, 0.00001));
+		
+		printer("exp^(-x²)", "Midpointrule with open boundary to infinite", 
+		midpoint_int_to_inf(*pA, *pnorm, exp_minus_x_sq, 0.00001));
 		
 	}
 	
@@ -81,7 +87,11 @@ int main (void)
 		pnorm = &norm;
 		*pnorm = g_p_init(mu,sigma);
 		
-		midpoint_int_to_inf(*pA, *pnorm, gaussian, 0.000001);
+		//printer("strange cosinus", "Midpointrule with open boundary to infinite", 
+		//midpoint_int_to_inf(*pA, *pnorm, strange_cos, 0.00000001));
+		
+		printer("exp^(-x²)", "Midpointrule with open boundary to infinite", 
+		midpoint_int_to_inf(*pA, *pnorm, exp_minus_x_sq, 0.00001));
 	}
 	return 0;
 }

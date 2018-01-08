@@ -3,6 +3,10 @@
 // Swap algorithm
 void xorSwap (double x, double y);
 
+// function to print solutions of Integrals
+void printer(const char * func_name, const char * integral_name,
+double integral_val);
+
 // function trafo for open boundary
 //double func_trafo(double(*func)(double x, FunctionParams));
 
