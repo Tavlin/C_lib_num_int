@@ -7,6 +7,17 @@
 //planed:
 //changing all given parameters to pointers. Gonna happen... someday... I guess
 
+// https://en.wikipedia.org/wiki/XOR_swap_algorithm
+void swap (double x, double y)
+{
+	if (x != y)
+	{
+		double b;
+		x = b;
+		x = y;
+		y = b;
+	}
+}
 
 
 //left Riemann sum
@@ -15,6 +26,12 @@ double(*func)(double, FunctionParams), double eps)
 //initial instead of init, cuz __init__ is SPECIAL, at least somewhere else :)
 
 {
+	// checks that initial value is allways smaller then final value 
+	if(A.final_val < A.initial)
+	{
+		swap(A.final_val, A.initial);
+	}
+	
 	// start value for the sum
 	double left_sum = 0;
 	
@@ -33,6 +50,13 @@ double(*func)(double, FunctionParams), double eps)
 double right_riemann_sum(InitialData A, FunctionParams params,
 double(*func)(double, FunctionParams), double eps)
 {
+
+	// checks that initial value is allways smaller then final value 
+	if(A.final_val < A.initial)
+	{
+		swap(A.final_val, A.initial);
+	}
+	
 	double right_sum = 0;
 	
 	double stepsize = (A.final_val-A.initial)/A.N;
@@ -49,6 +73,13 @@ double(*func)(double, FunctionParams), double eps)
 double trapezodial_integral(InitialData A, FunctionParams params,
 double(*func)(double, FunctionParams), double eps)
 {
+
+	// checks that initial value is allways smaller then final value 
+	if(A.final_val < A.initial)
+	{
+		swap(A.final_val, A.initial);
+	}
+	
 	// upper function value with pointy pointer
 	double right_step = 0;
 	double * pright_step;
@@ -81,6 +112,13 @@ double(*func)(double, FunctionParams), double eps)
 double simpson_integral(InitialData A, FunctionParams params,
 double(*func)(double, FunctionParams), double eps)
 {
+
+	// checks that initial value is allways smaller then final value 
+	if(A.final_val < A.initial)
+	{
+		swap(A.final_val, A.initial);
+	}
+	
 	// upper function value with pointy pointer
 	double right_step = 0;
 	double * pright_step;
@@ -118,6 +156,13 @@ double(*func)(double, FunctionParams), double eps)
 double trapezodial_integral_sas(InitialData A, FunctionParams params,
 double(*func)(double, FunctionParams), double eps)
 {
+
+	// checks that initial value is allways smaller then final value 
+	if(A.final_val < A.initial)
+	{
+		swap(A.final_val, A.initial);
+	}
+	
 	// reset # steps to 1
 	A.N = 1.0;
 	
@@ -175,4 +220,28 @@ double(*func)(double, FunctionParams), double eps)
 	printf("Number of steps = %.0lf\n\n", A.N);
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
