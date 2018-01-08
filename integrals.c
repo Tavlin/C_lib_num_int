@@ -182,18 +182,20 @@ double(*func)(double, FunctionParams), double eps)
 	(*p_previous_int_val) = (h/2.0) *
 	((*func)(A.initial,params) + (*func)(A.final_val,params));
 
-	// initial int value N = 2
-	(*p_integral_val) = (*p_previous_int_val)/2.0 + 
-	(	h/2.0) * 
-	((*func)((A.final_val + A.initial)/2.0, params));
-	
 	// so that N is up to date with N = 2 BEFORE entering the while loop!
 	A.N *= 2.0;
+	h /= 2.0;
+
+	// initial int value N = 2
+	(*p_integral_val) = (*p_previous_int_val)/2.0 + 
+	h * ((*func)((A.final_val + A.initial)/2.0, params));
 	
+
 	while(fabs((*p_previous_int_val)-(*p_integral_val)) > eps)
 	{
 		
 		A.N *= 2.0;
+		h /= 2.0;
 		stepsize = 1.0/A.N;
 	
 		// 2*stepsize so the calculation is only done once per stepsize
@@ -207,10 +209,10 @@ double(*func)(double, FunctionParams), double eps)
 	
 		*p_new_int_val = 0;
 	
-		for(double j = stepsize; j <= max_val_midpoints; j += tt_stepsize)
+		for(double j = 1; j <= A.N; j += 2)
 		{
-			(*p_new_int_val) += h*stepsize * 
-			(*func)((j*(A.initial+A.final_val)), params);
+			(*p_new_int_val) += h * 
+			(*func)((A.initial + j*h), params);
 			
 		}
 	
