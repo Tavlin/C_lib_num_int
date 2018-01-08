@@ -23,3 +23,7 @@ double(*func)(double, FunctionParams), double eps);
 // Trapezodial Rule semi adaptive stepsize
 double trapezodial_integral_sas(InitialData A, FunctionParams params,
 double(*func)(double, FunctionParams), double eps);
+
+// semi adaptive midpoint rule
+double midpoint_int(InitialData A, FunctionParams params,
+double(*func)(double, FunctionParams), double eps);

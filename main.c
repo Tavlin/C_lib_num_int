@@ -45,6 +45,8 @@ int main (void)
 	
 	trapezodial_integral_sas(*pA, *pnorm, gaussian, 0.0000001);
 	trapezodial_integral_sas(*pA, *pnorm, strange_cos, 0.0000001);
+	midpoint_int(*pA, *pnorm, gaussian, 0.00000001);
+	midpoint_int(*pA, *pnorm, strange_cos, 0.0000001);
 	
 	return 0;
 }

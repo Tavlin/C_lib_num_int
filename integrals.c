@@ -172,7 +172,7 @@ double(*func)(double, FunctionParams), double eps)
 	double previous_int_val = 0;
 	double* p_previous_int_val = &previous_int_val;
 	
-	double stepsize = A.N;
+	double stepsize = 1.0/A.N;
 	double h = (A.final_val - A.initial);
 	
 	double new_int_val = 0;
@@ -187,6 +187,8 @@ double(*func)(double, FunctionParams), double eps)
 	(	h/2.0) * 
 	((*func)((A.final_val + A.initial)/2.0, params));
 	
+	// so that N is up to date with N = 2 BEFORE entering the while loop!
+	A.N *= 2.0;
 	
 	while(fabs((*p_previous_int_val)-(*p_integral_val)) > eps)
 	{
@@ -217,12 +219,86 @@ double(*func)(double, FunctionParams), double eps)
 	}
 	printf("Trapezodial Rule with semi adaptive stepsize = %+6.10lf\n",
 	integral_val);
-	printf("Number of steps = %.0lf\n\n", A.N);
+	printf("Number of steps used in last calculation = %.0lf\n\n", A.N);
 	
 }
 
 
+// semi adaptive midpoint rule
+double midpoint_int(InitialData A, FunctionParams params,
+double(*func)(double, FunctionParams), double eps)
+{
 
+	// checks that initial value is allways smaller then final value 
+	if(A.final_val < A.initial)
+	{
+		swap(A.final_val, A.initial);
+	}
+	
+	// reset # steps to 1
+	A.N = 1.0;
+	
+	double integral_val = 0;
+	double* p_integral_val = &integral_val;
+	
+	double previous_int_val = 0;
+	double* p_previous_int_val = &previous_int_val;
+	
+	double stepsize = 1.0/A.N;
+	double h = (A.final_val - A.initial);
+	
+	double midpoint = (A.final_val + A.initial)/2.0;
+	
+	double new_int_val = 0;
+	double* p_new_int_val = &new_int_val;
+	
+	// initial int value N = 1
+	(*p_previous_int_val) = h * (*func)(midpoint, params);
+	
+	// so that N is up to date with N = 3 BEFORE entering the while loop!
+	A.N *= 3.0;
+	h /= 3.0;
+	
+	// initial int value N = 3
+	(*p_integral_val) = (*p_previous_int_val)/3.0 + h * 
+	(((*func)(midpoint - h, params)) + ((*func)(midpoint + h, params)));
+	
+	//printf("f(-h) = %+6.10lf\n", (*func)(midpoint - h, params));
+	//printf("f(+h) = %+6.10lf\n", (*func)(midpoint + h, params));
+	//printf("Integral for N = 1 is %+6.10lf\n", (*p_previous_int_val));
+	//printf("Integral for N = 3 is %+6.10lf\n", (*p_integral_val));
+	
+	while(fabs((*p_previous_int_val)-(*p_integral_val)) > eps)
+	{
+		
+		A.N *= 3.0;
+		h /= 3.0;
+	
+		(*p_previous_int_val) = (*p_integral_val);
+	
+		*p_new_int_val = 0;
+	
+		for(double j = -((A.N/2.0) - 0.5); j <= ((A.N/2.0) - 0.5); j += 3)
+		{
+			(*p_new_int_val) += h * (*func)(midpoint + (j*h), params);
+			
+		}
+	
+		for(double i = (-((A.N/2.0) - 0.5)) + 2; i <= ((A.N/2.0) - 0.5); i += 3)
+		{
+			(*p_new_int_val) += h * (*func)(midpoint + (i*h), params);
+			
+		}
+	
+		(*p_integral_val) = (*p_new_int_val) + (*p_integral_val)/3.0;
+
+	}
+	printf("Midpoint Rule with semi adaptive stepsize = %+6.10lf\n",
+	integral_val);
+	printf("Number of steps used in last calculation = %.0lf\n\n", A.N);
+	
+	
+}
 
 
 
