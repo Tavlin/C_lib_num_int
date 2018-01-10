@@ -11,14 +11,30 @@ FunctionParams g_p_init(double x, double y)
 	return z;
 }
 
-InitialData initialdata_init(double a, double b, double c)
+InitialData initialdata_init(double a, double b, double c, double d)
 {
 	InitialData x;
-	x.N = a;
+	x.stepsize = a;
 	x.initial = b;
 	x.final_val = c;
+	x.error = d;
 	return x;
 }
+
+TestCall test_call(char* integral_name, char* function_name, InitialData init_data,
+FunctionParams func_params, double function, double error)
+{
+
+	TestCall x;
+	x.integral_name = integral_name;
+	x.function_name = function_name;
+	x. init_data = init_data;
+	x.func_params = func_params;
+	x.function = function;
+	x.error = error;
+	return x;
+}
+
 
 double gaussian(double x, FunctionParams params)
 {

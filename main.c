@@ -7,13 +7,39 @@
 
 int main (void)
 {
+
+	char* function_name_list[4] = 
+	{"Gaussian", "x*cos²(2*pi*x²)", "exp^(-x²)", "1/sqrt(x)"};
+	
+	char* integral_name_list[7] = 
+	{"Left Riemann Sum", "Right Riemann Sum", "Trapezodial Rule",
+	"Simpson's Rule", "Trapezodial Rule with semi adaptive stepsize",
+	"Midpoint Rule with semiadatipve stepsize",
+	"Midpoint Rule with semiadatipve stepsize and open bondary"};
+	
+	double (*function_list[4])(double x, FunctionParams params) =
+	{gaussian, strange_cos, exp_minus_x_sq, rev_sqrt};
+	
+	double (* integral_list[7])(InitialData A, FunctionParams params,
+	double(*func)(double, FunctionParams), double eps) =
+	{left_riemann_sum, right_riemann_sum, trapezodial_integral, simpson_integral,
+	trapezodial_integral_sas, midpoint_int, midpoint_int_to_inf};
+	
+	/*
+	function_name_list[0] = "Gaussian";
+	function_name_list[1] = "x*cos²(2*pi*x²)";
+	function_name_list[2] = "exp^(-x²)";
+	function_name_list[3] = "1/sqrt(x)";
+	*/
+	
+	
 	int check;
-	printf("1 for [a,b]\n2 for [a,inf):");
+	printf("Enter mode (1 for [a,b] or 2 for [a,inf)): ");
 		scanf("%i", &check);
 		
 	if(check == 1)
 	{
-		double N,a,b,mu,sigma;
+		double N,a,b,c,mu,sigma;
 		printf("Enter stepsize: ");
 		scanf("%lf", &N);
 
@@ -32,7 +58,7 @@ int main (void)
 		InitialData A;
 		InitialData* pA;
 		pA = &A;
-		*pA = initialdata_init(N,a,b);
+		*pA = initialdata_init(N,a,b,c);
 	
 		FunctionParams norm;
 		FunctionParams * pnorm;
@@ -77,13 +103,13 @@ int main (void)
 		midpoint_int(*pA, *pnorm, strange_cos, 0.0000001));
 		
 		printer("exp^(-x²)", "Midpointrule with open boundary to infinite", 
-		midpoint_int_to_inf(*pA, *pnorm, exp_minus_x_sq, 0.00001));
+		midpoint_int_to_inf(*pA, *pnorm, exp_minus_x_sq, 0.0000001));
 		
 	}
 	
 	else if(check == 2)
 	{
-		double N,a,b,mu,sigma;
+		double N,a,b,c,mu,sigma;
 		printf("Enter stepsize: ");
 		scanf("%lf", &N);
 
@@ -99,7 +125,7 @@ int main (void)
 		InitialData A;
 		InitialData* pA;
 		pA = &A;
-		*pA = initialdata_init(N,a,b);
+		*pA = initialdata_init(N,a,b,c);
 	
 		FunctionParams norm;
 		FunctionParams * pnorm;

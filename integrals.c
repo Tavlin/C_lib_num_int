@@ -57,12 +57,12 @@ double(*func)(double, FunctionParams), double eps)
 	// start value for the sum
 	double left_sum = 0;
 	
-	double stepsize = (A.final_val-A.initial)/A.N; 
+	double stepsize = (A.final_val-A.initial)/A.stepsize; 
 	
-	for(double i = 1; i <= A.N; i++)
+	for(double i = 1; i <= A.stepsize; i++)
 	{
 		left_sum += stepsize *
-		(*func)((A.initial + (((i-1)*(A.final_val-A.initial))/A.N)), params);
+		(*func)((A.initial + (((i-1)*(A.final_val-A.initial))/A.stepsize)), params);
 	}
 	
 	if(swaped ==1)
@@ -92,12 +92,12 @@ double(*func)(double, FunctionParams), double eps)
 	
 	double right_sum = 0;
 	
-	double stepsize = (A.final_val-A.initial)/A.N;
+	double stepsize = (A.final_val-A.initial)/A.stepsize;
 	
-	for(double i = 1; i <= A.N; i++)
+	for(double i = 1; i <= A.stepsize; i++)
 	{
 		right_sum += stepsize *
-		(*func)(((A.initial+(i*(A.final_val-A.initial))/A.N)), params);
+		(*func)(((A.initial+(i*(A.final_val-A.initial))/A.stepsize)), params);
 	}
 	
 	if(swaped ==1)
@@ -136,13 +136,13 @@ double(*func)(double, FunctionParams), double eps)
 	
 	double integral_val = 0;
 	
-	double stepsize = (A.final_val-A.initial)/A.N;
+	double stepsize = (A.final_val-A.initial)/A.stepsize;
 	
 	*pleft_step = (*func)((A.initial), params);
 	
-	for(double i = 1; i <= A.N; i++)
+	for(double i = 1; i <= A.stepsize; i++)
 	{
-		*pright_step = (*func)((A.initial+(i*(A.final_val-A.initial))/A.N), params);
+		*pright_step = (*func)((A.initial+(i*(A.final_val-A.initial))/A.stepsize), params);
 		
 		integral_val += stepsize/2.0 * 
 		((*pleft_step) + (*pright_step));
@@ -187,19 +187,19 @@ double(*func)(double, FunctionParams), double eps)
 	
 	double integral_val = 0;
 	
-	double stepsize = (A.final_val-A.initial)/A.N;
+	double stepsize = (A.final_val-A.initial)/A.stepsize;
 	
 	// initial lower function value
 	*pleft_step = (*func)((A.initial), params);
 	
-	for(double i = 1; i <= A.N; i++)
+	for(double i = 1; i <= A.stepsize; i++)
 	{
-		*pright_step = (*func)((A.initial+(i*(A.final_val-A.initial))/A.N), params);
+		*pright_step = (*func)((A.initial+(i*(A.final_val-A.initial))/A.stepsize), params);
 		
 		integral_val += (stepsize/6.0) *
 		((*pleft_step) + (*pright_step) + 
-		(4.0*(*func)(((A.initial+(i*(A.final_val-A.initial))/A.N) +
-		(A.initial + (((i-1)*(A.final_val-A.initial))/A.N)))/2.0,params)));
+		(4.0*(*func)(((A.initial+(i*(A.final_val-A.initial))/A.stepsize) +
+		(A.initial + (((i-1)*(A.final_val-A.initial))/A.stepsize)))/2.0,params)));
 		
 		(*pleft_step) = (*pright_step);
 		
@@ -231,7 +231,7 @@ double(*func)(double, FunctionParams), double eps)
 	}
 	
 	// reset # steps to 1
-	A.N = 1.0;
+	A.stepsize = 1.0;
 	
 	double integral_val = 0;
 	double* p_integral_val = &integral_val;
@@ -239,7 +239,7 @@ double(*func)(double, FunctionParams), double eps)
 	double previous_int_val = 0;
 	double* p_previous_int_val = &previous_int_val;
 	
-	double stepsize = 1.0/A.N;
+	double stepsize = 1.0/A.stepsize;
 	double h = (A.final_val - A.initial);
 	
 	double new_int_val = 0;
@@ -250,7 +250,7 @@ double(*func)(double, FunctionParams), double eps)
 	((*func)(A.initial,params) + (*func)(A.final_val,params));
 
 	// so that N is up to date with N = 2 BEFORE entering the while loop!
-	A.N *= 2.0;
+	A.stepsize *= 2.0;
 	h /= 2.0;
 
 	// initial int value N = 2
@@ -261,22 +261,22 @@ double(*func)(double, FunctionParams), double eps)
 	while(fabs((*p_previous_int_val)-(*p_integral_val)) > eps)
 	{
 		
-		A.N *= 2.0;
+		A.stepsize *= 2.0;
 		h /= 2.0;
-		stepsize = 1.0/A.N;
+		stepsize = 1.0/A.stepsize;
 	
 		// 2*stepsize so the calculation is only done once per stepsize
 		// otherwise it would need to calc for every for iteration
 		double tt_stepsize = 2.0*stepsize;
 	
 		// new maximum value for the new midpoints:
-		double max_val_midpoints = (A.N-1.0)/A.N;
+		double max_val_midpoints = (A.stepsize-1.0)/A.stepsize;
 	
 		(*p_previous_int_val) = (*p_integral_val);
 	
 		*p_new_int_val = 0;
 	
-		for(double j = 1; j <= A.N; j += 2)
+		for(double j = 1; j <= A.stepsize; j += 2)
 		{
 			(*p_new_int_val) += h * 
 			(*func)((A.initial + j*h), params);
@@ -287,7 +287,7 @@ double(*func)(double, FunctionParams), double eps)
 
 	}
 	
-	printf("Number of steps used in last calculation = %.0lf\n\n", A.N);
+	printf("Number of steps used in last calculation = %.0lf\n\n", A.stepsize);
 	
 	if(swaped ==1)
 	{
@@ -316,7 +316,7 @@ double(*func)(double, FunctionParams), double eps)
 	}
 	
 	// reset # steps to 1
-	A.N = 1.0;
+	A.stepsize = 1.0;
 	
 	double integral_val = 0;
 	double* p_integral_val = &integral_val;
@@ -324,7 +324,7 @@ double(*func)(double, FunctionParams), double eps)
 	double previous_int_val = 0;
 	double* p_previous_int_val = &previous_int_val;
 	
-	double stepsize = 1.0/A.N;
+	double stepsize = 1.0/A.stepsize;
 	double h = (A.final_val - A.initial);
 	
 	double midpoint = (A.final_val + A.initial)/2.0;
@@ -336,7 +336,7 @@ double(*func)(double, FunctionParams), double eps)
 	(*p_previous_int_val) = h * (*func)(midpoint, params);
 	
 	// so that N is up to date with N = 3 BEFORE entering the while loop!
-	A.N *= 3.0;
+	A.stepsize *= 3.0;
 	h /= 3.0;
 	
 	// initial int value N = 3
@@ -346,20 +346,20 @@ double(*func)(double, FunctionParams), double eps)
 	while(fabs((*p_previous_int_val)-(*p_integral_val)) > eps)
 	{
 		
-		A.N *= 3.0;
+		A.stepsize *= 3.0;
 		h /= 3.0;
 	
 		(*p_previous_int_val) = (*p_integral_val);
 	
 		*p_new_int_val = 0;
 	
-		for(double j = -((A.N/2.0) - 0.5); j <= ((A.N/2.0) - 0.5); j += 3)
+		for(double j = -((A.stepsize/2.0) - 0.5); j <= ((A.stepsize/2.0) - 0.5); j += 3)
 		{
 			(*p_new_int_val) += h * (*func)(midpoint + (j*h), params);
 			
 		}
 	
-		for(double i = (-((A.N/2.0) - 0.5)) + 2; i <= ((A.N/2.0) - 0.5); i += 3)
+		for(double i = (-((A.stepsize/2.0) - 0.5)) + 2; i <= ((A.stepsize/2.0) - 0.5); i += 3)
 		{
 			(*p_new_int_val) += h * (*func)(midpoint + (i*h), params);
 			
@@ -369,7 +369,7 @@ double(*func)(double, FunctionParams), double eps)
 
 	}
 	
-	printf("Number of steps used in last calculation = %.0lf\n\n", A.N);
+	printf("Number of steps used in last calculation = %.0lf\n\n", A.stepsize);
 	
 	if(swaped ==1)
 	{
@@ -412,7 +412,7 @@ double(*func)(double, FunctionParams), double eps)
 	}
 	
 	// reset # steps to 1
-	A.N = 1.0;
+	A.stepsize = 1.0;
 	
 	double integral_val = 0;
 	double* p_integral_val = &integral_val;
@@ -420,7 +420,7 @@ double(*func)(double, FunctionParams), double eps)
 	double previous_int_val = 0;
 	double* p_previous_int_val = &previous_int_val;
 	
-	double stepsize = 1.0/A.N;
+	double stepsize = 1.0/A.stepsize;
 	double h = (A.final_val - A.initial);
 	
 	double midpoint = (A.final_val + A.initial)/2.0;
@@ -432,7 +432,7 @@ double(*func)(double, FunctionParams), double eps)
 	(*p_previous_int_val) = h/pow(midpoint,2) * (*func)(1.0/midpoint, params);
 	
 	// so that N is up to date with N = 3 BEFORE entering the while loop!
-	A.N *= 3.0;
+	A.stepsize *= 3.0;
 	h /= 3.0;
 	
 	// initial int value N = 3
@@ -443,21 +443,21 @@ double(*func)(double, FunctionParams), double eps)
 	while(fabs((*p_previous_int_val)-(*p_integral_val)) > eps)
 	{
 		
-		A.N *= 3.0;
+		A.stepsize *= 3.0;
 		h /= 3.0;
 	
 		(*p_previous_int_val) = (*p_integral_val);
 	
 		*p_new_int_val = 0;
 	
-		for(double j = -((A.N/2.0) - 0.5); j <= ((A.N/2.0) - 0.5); j += 3)
+		for(double j = -((A.stepsize/2.0) - 0.5); j <= ((A.stepsize/2.0) - 0.5); j += 3)
 		{
 			(*p_new_int_val) += h/pow((midpoint + (j*h)),2) * 
 			(*func)(1/(midpoint + (j*h)), params);
 			
 		}
 	
-		for(double i = (-((A.N/2.0) - 0.5)) + 2; i <= ((A.N/2.0) - 0.5); i += 3)
+		for(double i = (-((A.stepsize/2.0) - 0.5)) + 2; i <= ((A.stepsize/2.0) - 0.5); i += 3)
 		{
 			(*p_new_int_val) += h/pow((midpoint + (i*h)),2) * 
 			(*func)(1/(midpoint + (i*h)), params);
@@ -468,7 +468,7 @@ double(*func)(double, FunctionParams), double eps)
 
 	}
 	integral_val += f_int;
-	printf("Number of steps used in last calculation = %.0lf\n\n", A.N);
+    printf("Number of steps used in last calculation = %.0lf\n\n", A.stepsize);
 	
 	return integral_val;
 	

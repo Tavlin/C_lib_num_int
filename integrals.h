@@ -10,12 +10,12 @@ double integral_val);
 // function trafo for open boundary
 //double func_trafo(double(*func)(double x, FunctionParams));
 
+
 // left Riemann sum
 double left_riemann_sum(InitialData A, FunctionParams params,
 double(*func)(double, FunctionParams), double eps);
 
-
-// right Rieman sum
+// right Riemann sum
 double right_riemann_sum(InitialData A, FunctionParams params,
 double(*func)(double, FunctionParams), double eps);
 

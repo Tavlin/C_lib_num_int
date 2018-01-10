@@ -6,26 +6,44 @@ struct function_parameters
 };
 
 // Definition for the integral-bounds and the stepsize
-struct bounds_stepsize
+struct initial_data
 {
-	double N;
+	double stepsize;
 	double initial;
 	double final_val;
+	double error;
 };
-
 
 // structure for function parameters
 typedef struct function_parameters FunctionParams;
 
 // structure for the integral-bounds and the stepsize
-typedef struct bounds_stepsize InitialData;
+typedef struct initial_data InitialData;
 
+
+// Definition for test calling
+struct test_call
+{
+	char* integral_name;
+	char* function_name;
+	InitialData init_data;
+	FunctionParams func_params;
+	double function;
+	double error;
+};
+
+// struct for test calls
+typedef struct test_call TestCall;
 
 // declaration
 FunctionParams g_p_init(double x, double y);
 
 // declaration
-InitialData initialdata_init(double a, double b, double c);
+InitialData initialdata_init(double a, double b, double c, double d);
+
+//decleration
+TestCall test_call(char* test_name, char* function_name, InitialData init_data,
+FunctionParams func_params, double function, double error);
 
 
 //Function declerations:
